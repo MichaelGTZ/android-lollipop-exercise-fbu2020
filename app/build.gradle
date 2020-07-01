@@ -32,4 +32,7 @@ dependencies {
 
     // For snackbar
     implementation "com.google.android.material:material:1.1.0"
+
+    // For Pallete
+    implementation "androidx.palette:palette:1.0.0"
 }
