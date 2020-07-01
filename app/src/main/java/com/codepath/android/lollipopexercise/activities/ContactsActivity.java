@@ -3,14 +3,17 @@ package com.codepath.android.lollipopexercise.activities;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.android.lollipopexercise.R;
 import com.codepath.android.lollipopexercise.adapters.ContactsAdapter;
 import com.codepath.android.lollipopexercise.models.Contact;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -62,6 +65,25 @@ public class ContactsActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
+        switch (id) {
+            case R.id.miAdd:
+                contacts.add(0, Contact.getRandomContact(this));
+                mAdapter.notifyItemInserted(0);
+                rvContacts.scrollToPosition(0);
+                Snackbar.make(rvContacts, "Contact Added", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(ContextCompat.getColor(ContactsActivity.this, R.color.accent))
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                contacts.remove(0);
+                                mAdapter.notifyItemRemoved(0);
+                                rvContacts.scrollToPosition(0);
+                            }
+                        })
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
